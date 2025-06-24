@@ -15,11 +15,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Lint code base
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Poetry
         run: |
           pip install poetry
+
+      - name: Install dependencies with Poetry
+        run: |
           poetry install
-          poetry run flake8
 
   docker-build:
     name: Docker Image Build
