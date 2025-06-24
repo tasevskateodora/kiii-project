@@ -1,4 +1,4 @@
-name: Complete Project Pipeline
+name: CI Pipeline
 
 on:
   push:
@@ -9,24 +9,17 @@ on:
       - "master"
 
 jobs:
-  code-check:
-    name: Linting and Testing
+  run-lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install requirements and tools
+      - name: Lint code base
         run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install flake8 pytest
-
+          pip install poetry
+          poetry install
+          poetry run flake8
 
   docker-build:
     name: Docker Image Build
@@ -47,9 +40,8 @@ jobs:
 
   docker-deploy:
     name: Push to DockerHub
-    needs: [code-check, docker-build]
+    needs: [run-lint, docker-build]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
