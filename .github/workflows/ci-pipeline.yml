@@ -29,6 +29,7 @@ jobs:
 
   docker-build:
     name: Docker Image Build
+    needs: [code-check]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
