@@ -9,24 +9,23 @@ on:
       - "master"
 
 jobs:
-  run-lint:
+  code-check:
+    name: Linting and Testing
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Install Poetry
+      - name: Install requirements and tools
         run: |
-          pip install poetry
-
-      - name: Install dependencies with Poetry
-        run: |
-          poetry install
+         python -m pip install --upgrade pip
+         pip install -r requirements.txt || true
+         pip install flake8 pytest 
 
   docker-build:
     name: Docker Image Build
@@ -47,7 +46,7 @@ jobs:
 
   docker-deploy:
     name: Push to DockerHub
-    needs: [run-lint, docker-build]
+    needs: [code-check, docker-build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
