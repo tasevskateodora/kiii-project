@@ -2,7 +2,7 @@
 name = "cicd-project"
 version = "0.1.0"
 description = ""
-authors = ["Delemangi <milev.stefan@gmail.com>"]
+authors = ["Teodora Tasevska"]
 readme = "README.md"
 packages = [{ include = "cicd_project" }]
 
