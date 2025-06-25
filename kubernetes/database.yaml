@@ -4,8 +4,8 @@ metadata:
   name: kiii-project-postgres-config
   namespace: kiii
 data:
-  POSTGRES_DB: postgres
-  POSTGRES_USER: postgres
+  POSTGRES_DB: db
+  POSTGRES_USER: user
 ---
 apiVersion: v1
 kind: Secret
@@ -14,7 +14,7 @@ metadata:
   namespace: kiii
 type: Opaque
 data:
-  password: cG9zdGdyZXM=
+  password: cGFzc3dvcmQ=
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
