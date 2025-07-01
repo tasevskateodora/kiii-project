@@ -80,8 +80,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/kiii-project:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/kiii-project:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/reservations-crud:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/reservations-crud:${{ github.sha }}
 
       - name: Build and push frontend Docker image
         uses: docker/build-push-action@v5
@@ -89,5 +89,5 @@ jobs:
           context: ./reservation-frontend
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/kiii-frontend:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/kiii-frontend:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/reservations-crud:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/reservations-crud:${{ github.sha }}
