@@ -22,3 +22,12 @@ services:
     volumes:
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c hba_file=/etc/postgresql/pg_hba.conf
+
+  frontend:
+    build:
+      context: ./reservation-frontend
+    container_name: reservation-frontend
+    ports:
+      - 3000:3000
+    command: npm start
+    restart: unless-stopped

@@ -5,8 +5,8 @@ metadata:
   namespace: kiii
 data:
   POSTGRES_URL: kiii-project-postgres-service.kiii.svc.cluster.local
-  POSTGRES_DATABASE: postgres
-  POSTGRES_USER: postgres
+  POSTGRES_DATABASE: db
+  POSTGRES_USER: user
 ---
 apiVersion: v1
 kind: Secret
@@ -15,7 +15,7 @@ metadata:
   namespace: kiii
 type: Opaque
 data:
-  password: cG9zdGdyZXM=
+  password: cGFzc3dvcmQ=
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: kiii-project
-          image: delemangi/kiii-project:latest
+          image: teodoratasevska/kiii-project:latest
           imagePullPolicy: Always
           resources:
             limits:

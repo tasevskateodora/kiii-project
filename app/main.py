@@ -3,14 +3,20 @@ import time
 from fastapi import Depends, FastAPI
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
-
+from fastapi.middleware.cors import CORSMiddleware
 from app.crud import create, delete, list_all, read, update
 from app.db import SessionLocal, engine
 from app.models import Base
 from app.schemas import ReservationSchema
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # frontend адреса
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 for i in range(5):
     try:
         Base.metadata.create_all(bind=engine)
