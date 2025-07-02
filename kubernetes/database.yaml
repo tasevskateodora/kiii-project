@@ -8,7 +8,6 @@ data:
   POSTGRES_USER: "user"
 
 ---
-# Database Secret
 apiVersion: v1
 kind: Secret
 metadata:
@@ -19,7 +18,6 @@ data:
   password: cGFzc3dvcmQ=
 
 ---
-# Database PVC
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -84,7 +82,6 @@ spec:
             storage: 5Gi
 
 ---
-# Database Service
 apiVersion: v1
 kind: Service
 metadata:
