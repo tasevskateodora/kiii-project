@@ -1,4 +1,4 @@
-# ConfigMap
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,7 +11,7 @@ data:
 
 ---
 
-# Secret
+
 apiVersion: v1
 kind: Secret
 metadata:
@@ -23,7 +23,6 @@ data:
 
 ---
 
-# Backend Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -61,7 +60,6 @@ spec:
 
 ---
 
-# Frontend Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
