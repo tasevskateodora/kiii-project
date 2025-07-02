@@ -34,7 +34,6 @@ spec:
       storage: 5Gi
 
 ---
-# Database StatefulSet
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
