@@ -5,6 +5,7 @@ metadata:
   namespace: kiii
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
@@ -13,6 +14,13 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: kiii-project-service
+            name: kiii-frontend-service
             port:
               number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: kiii-project-service
+            port:
+              number: 8080

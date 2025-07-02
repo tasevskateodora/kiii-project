@@ -1,13 +1,17 @@
+# ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kiii-project-config
   namespace: kiii
 data:
-  POSTGRES_URL: kiii-project-postgres-service.kiii.svc.cluster.local
-  POSTGRES_DATABASE: db
-  POSTGRES_USER: user
+  POSTGRES_URL: "kiii-project-postgres-service.kiii.svc.cluster.local"
+  POSTGRES_DATABASE: "db"
+  POSTGRES_USER: "user"
+
 ---
+
+# Secret
 apiVersion: v1
 kind: Secret
 metadata:
@@ -15,15 +19,18 @@ metadata:
   namespace: kiii
 type: Opaque
 data:
-  password: cGFzc3dvcmQ=
+  password: cGFzc3dvcmQ=  # base64 за "password"
+
 ---
+
+# Backend Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kiii-project-deployment
   namespace: kiii
 spec:
-  replicas: 5
+  replicas: 2
   selector:
     matchLabels:
       app: kiii-project
@@ -34,14 +41,14 @@ spec:
     spec:
       containers:
         - name: kiii-project
-          image: teodoratasevska/kiii-project:latest
+          image: teodoratasevska/reservations-crud-backend:latest
           imagePullPolicy: Always
+          ports:
+            - containerPort: 80
           resources:
             limits:
               memory: "128Mi"
               cpu: "500m"
-          ports:
-            - containerPort: 80
           envFrom:
             - configMapRef:
                 name: kiii-project-config
@@ -51,3 +58,32 @@ spec:
                 secretKeyRef:
                   name: kiii-project-secret
                   key: password
+
+---
+
+# Frontend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kiii-frontend-deployment
+  namespace: kiii
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kiii-frontend
+  template:
+    metadata:
+      labels:
+        app: kiii-frontend
+    spec:
+      containers:
+        - name: kiii-frontend
+          image: teodoratasevska/reservations-crud-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

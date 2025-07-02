@@ -4,9 +4,11 @@ metadata:
   name: kiii-project-postgres-config
   namespace: kiii
 data:
-  POSTGRES_DB: db
-  POSTGRES_USER: user
+  POSTGRES_DB: "db"
+  POSTGRES_USER: "user"
+
 ---
+# Database Secret
 apiVersion: v1
 kind: Secret
 metadata:
@@ -15,9 +17,11 @@ metadata:
 type: Opaque
 data:
   password: cGFzc3dvcmQ=
+
 ---
-kind: PersistentVolumeClaim
+# Database PVC
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
   name: kiii-project-postgres-pvc
   namespace: kiii
@@ -25,13 +29,14 @@ metadata:
     app: postgres
 spec:
   storageClassName: local-path
-  capacity:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
+
 ---
+# Database StatefulSet
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -47,11 +52,10 @@ spec:
     metadata:
       labels:
         app: postgres
-        namespace: kiii
     spec:
       containers:
         - name: postgres
-          image: postgres:latest
+          image: postgres:13
           envFrom:
             - configMapRef:
                 name: kiii-project-postgres-config
@@ -67,11 +71,20 @@ spec:
           volumeMounts:
             - name: kiii-project-postgres-data
               mountPath: /var/lib/postgresql/data
-      volumes:
-        - name: kiii-project-postgres-data
-          persistentVolumeClaim:
-            claimName: kiii-project-postgres-pvc
+              subPath: postgres
+  volumeClaimTemplates:
+    - metadata:
+        name: kiii-project-postgres-data
+      spec:
+        storageClassName: local-path
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+
 ---
+# Database Service
 apiVersion: v1
 kind: Service
 metadata:
